@@ -54,6 +54,9 @@ class AStarGraph:
                 current_index = index
         return current_node, current_index
 
+    def heuristic(self, node, end):
+        return ((node.position[0] - end.position[0]) ** 2) + ((node.position[1] - end.position[1]) ** 2)
+
     def shortest_path(self, start, end):
         """Returns a list of tuples as a path from the given start to the given end in the given maze"""
 
@@ -89,7 +92,7 @@ class AStarGraph:
 
                 # Create the f, g, and h values
                 child.g = current_node.g + 1
-                child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
+                child.h = self.heuristic(child, end_node)
                 child.f = child.g + child.h
 
                 # Child is already in the open list
