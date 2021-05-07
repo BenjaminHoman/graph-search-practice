@@ -56,24 +56,19 @@ class AStarGrid:
         return ((node.position[0] - end.position[0]) ** 2) + ((node.position[1] - end.position[1]) ** 2)
 
     def shortest_path(self, start, end):
-        # Create start and end node
         start_node = Node(None, start)
         start_node.g = start_node.h = start_node.f = 0
         end_node = Node(None, end)
         end_node.g = end_node.h = end_node.f = 0
 
-        # Initialize both open and closed list
         open_list = []
         closed_list = []
 
-        # Add the start node
         open_list.append(start_node)
 
-        # Loop until you find the end
         while len(open_list) > 0:
             current_node, current_index = self.get_current_node(open_list)
 
-            # Pop current off open list, add to closed list
             open_list.pop(current_index)
             closed_list.append(current_node)
 
@@ -108,7 +103,7 @@ class AStarGridDebug(AStarGrid):
 
     def debug(self, start, end):
         path = self.shortest_path(start, end)
-        debug_grid = copy.copy(self.grid)
+        debug_grid = copy.deepcopy(self.grid)
         for node in path:
             a, b = node[0], node[1]
             debug_grid[a][b] = 'X'
@@ -137,8 +132,15 @@ if __name__ == '__main__':
     start = (0, 0)
     end = (8, 3)
 
-    #path = astar(maze, start, end)
-    #print(path)
-
     graph = AStarGridDebug(maze)
     graph.debug(start, end)
+    print()
+
+    #example use
+    graph = AStarGrid(maze)
+    path = graph.shortest_path((0,0), (8,3))
+    #path is list of tuples representing cords. [(0,0), (1,1), (n,n)]
+    if len(path) > 0:
+        print(path)
+    else:
+        print("Path does not exist")
