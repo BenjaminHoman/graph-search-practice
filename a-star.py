@@ -1,10 +1,19 @@
-import copy
+import copy, math
 
-class Node():
+class Node:
+    def __init__(self, parent=None):
+        self.parent = parent
+
+    def build_path(self):
+        if self.parent is not None:
+            return self.parent.build_path() + [self.position]
+        return [self.position]
+
+class GridNode(Node):
     """A node class for A* Pathfinding"""
 
     def __init__(self, parent=None, position=None):
-        self.parent = parent
+        super().__init__(parent)
         self.position = position
 
         self.g = 0
@@ -13,11 +22,6 @@ class Node():
 
     def __eq__(self, other):
         return self.position == other.position
-
-    def build_path(self):
-        if self.parent is not None:
-            return self.parent.build_path() + [self.position]
-        return [self.position]
 
 class AStarGraph:
     def __init__(self, grid):
@@ -35,7 +39,7 @@ class AStarGraph:
             if self.is_out_of_bounds(node_pos) or not self.is_walkable(node_pos):
                 continue
 
-            yield Node(node, node_pos)
+            yield GridNode(node, node_pos)
 
     def is_out_of_bounds(self, pos):
         return pos[0] > (len(self.grid)-1) or pos[0] < 0 or pos[1] > (len(self.grid[0])-1) or pos[1] < 0
@@ -61,9 +65,9 @@ class AStarGraph:
         """Returns a list of tuples as a path from the given start to the given end in the given maze"""
 
         # Create start and end node
-        start_node = Node(None, start)
+        start_node = GridNode(None, start)
         start_node.g = start_node.h = start_node.f = 0
-        end_node = Node(None, end)
+        end_node = GridNode(None, end)
         end_node.g = end_node.h = end_node.f = 0
 
         # Initialize both open and closed list
