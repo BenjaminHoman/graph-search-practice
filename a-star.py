@@ -19,7 +19,7 @@ class Node():
             return self.parent.build_path() + [self.position]
         return [self.position]
 
-class AStarGraph:
+class AStarGrid:
     def __init__(self, grid):
         self.grid = grid
 
@@ -106,7 +106,7 @@ class AStarGraph:
         # no path found
         return []
 
-class AStarGraphDebug(AStarGraph):
+class AStarGridDebug(AStarGrid):
     def __init__(self, grid):
         super().__init__(grid)
 
@@ -144,5 +144,5 @@ if __name__ == '__main__':
     #path = astar(maze, start, end)
     #print(path)
 
-    graph = AStarGraphDebug(maze)
+    graph = AStarGridDebug(maze)
     graph.debug(start, end)
